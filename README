@@ -1,0 +1,2 @@
+mv settings.js.sample settings.js
+vi settings.js # edit this file

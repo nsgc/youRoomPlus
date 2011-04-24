@@ -1,0 +1,4 @@
+var conf = {
+  'consumer_key' : '',
+  'consumer_secret' : ''
+}

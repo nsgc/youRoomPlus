@@ -2,13 +2,15 @@
   <head>
     <script type="text/javascript" src="chrome_ex_oauthsimple.js"></script>
     <script type="text/javascript" src="chrome_ex_oauth.js"></script>
+    <script type="text/javascript" src="date.js"></script>
+    <script type="text/javascript" src="settings.js"></script>
     <script type="text/javascript">
       var oauth = ChromeExOAuth.initBackgroundPage({
         'request_url' : 'https://youroom.in/oauth/request_token',
         'authorize_url' : 'https://youroom.in/oauth/authorize',
         'access_url' : 'https://youroom.in/oauth/access_token',
-        'consumer_key' : '**',
-        'consumer_secret' : '**'
+        'consumer_key' : conf.consumer_key,
+        'consumer_secret' : conf.consumer_secret
       });
 
       var callbackHomeTimeLine = function(resp, xhr) {
@@ -22,11 +24,11 @@
             date = new Date();
           }
         }
-        //date = new Date("2011-04-22T09:31:28Z");
+        date = new Date("2011-04-24T09:31:28Z");
 
         for(var i = 0; i < data.length; i ++){
           if (( date < new Date(data[i].entry.updated_at) ) && (window.webkitNotifications.checkPermission() === 0)) {
-            showNotification("icon.png", data[i].entry.participation.name + "@" + data[i].entry.participation.group.name, data[i].entry.content);
+            showNotification("icon.png", data[i].entry.participation.name + "@" + data[i].entry.participation.group.name + "(" + new Date(data[i].entry.updated_at).dateFormat() + ")", data[i].entry.content);
           }
         };
 
@@ -35,6 +37,7 @@
         localStorage["youroomLoadTime"] = date.toString();
         return null;
       }
+console.log(conf);
 
       function loadHomeTimeLineAtInterval() {
         var url = 'https://www.youroom.in/';
@@ -43,7 +46,7 @@
       }
 
       var syncYouroom = function () {
-        setInterval("loadHomeTimeLineAtInterval()", 60 * 1000);
+        setInterval("loadHomeTimeLineAtInterval()", 60 * 60 * 1000);
       }
 
       function showNotification(icon, title, message) {
