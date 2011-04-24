@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <script type="text/javascript" src="chrome_ex_oauthsimple.js"></script>
+    <script type="text/javascript" src="chrome_ex_oauth.js"></script>
+    <script type="text/javascript">
+      var oauth = ChromeExOAuth.initBackgroundPage({
+        'request_url' : 'https://youroom.in/oauth/request_token',
+        'authorize_url' : 'https://youroom.in/oauth/authorize',
+        'access_url' : 'https://youroom.in/oauth/access_token',
+        'consumer_key' : '**',
+        'consumer_secret' : '**'
+      });
+
+      var callbackHomeTimeLine = function(resp, xhr) {
+        var data = JSON.parse(xhr.responseText);
+        var date = new Date(localStorage["youroomLoadTime"]);
+
+        if (date == "Invalid Date" ) {
+          if (data != "undefined") {
+            date = new Date(data[0].entry.updated_at);
+          } else {
+            date = new Date();
+          }
+        }
+        //date = new Date("2011-04-22T09:31:28Z");
+
+        for(var i = 0; i < data.length; i ++){
+          if (( date < new Date(data[i].entry.updated_at) ) && (window.webkitNotifications.checkPermission() === 0)) {
+            showNotification("icon.png", data[i].entry.participation.name + "@" + data[i].entry.participation.group.name, data[i].entry.content);
+          }
+        };
+
+        if ( date < new Date(data[0].entry.updated_at)) { date = new Date(data[0].entry.updated_at); }
+
+        localStorage["youroomLoadTime"] = date.toString();
+        return null;
+      }
+
+      function loadHomeTimeLineAtInterval() {
+        var url = 'https://www.youroom.in/';
+        var request = { 'method': 'GET', 'parameters': {'format': 'json'} };
+          oauth.sendSignedRequest(url, callbackHomeTimeLine, request);
+      }
+
+      var syncYouroom = function () {
+        setInterval("loadHomeTimeLineAtInterval()", 60 * 1000);
+      }
+
+      function showNotification(icon, title, message) {
+        var notification =  window.webkitNotifications.createNotification(icon, title, message);
+        notification.ondisplay = function(){
+          setTimeout(function(){
+            notification.cancel();
+          },7000);
+        };
+
+        notification.show();
+      };
+      oauth.authorize(syncYouroom);
+    </script>
+  </head>
+</html>
