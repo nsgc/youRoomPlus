@@ -24,7 +24,6 @@
             date = new Date();
           }
         }
-        date = new Date("2011-04-24T09:31:28Z");
 
         for(var i = 0; i < data.length; i ++){
           if (( date < new Date(data[i].entry.updated_at) ) && (window.webkitNotifications.checkPermission() === 0)) {
@@ -37,7 +36,6 @@
         localStorage["youroomLoadTime"] = date.toString();
         return null;
       }
-console.log(conf);
 
       function loadHomeTimeLineAtInterval() {
         var url = 'https://www.youroom.in/';
