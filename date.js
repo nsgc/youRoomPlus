@@ -1,9 +1,10 @@
-Date.prototype.dateFormat = function(){
-    year = this.getYear();
-    month = this.getMonth() + 1;
-    date = this.getDate();
-    hour = this.getHours();
-    minute = this.getMinutes();
+function dateFormat(indate){
+    var thisdate = new Date(indate);
+    year = thisdate.getYear();
+    month = thisdate.getMonth() + 1;
+    date = thisdate.getDate();
+    hour = thisdate.getHours();
+    minute = thisdate.getMinutes();
     var yy, mm = month, dd = date, HH = hour, MM = minute;
     if (year < 2000) { yy = 1900 + year; }
     if (month < 10) { mm = "0" + month; }
@@ -14,7 +15,7 @@ Date.prototype.dateFormat = function(){
 
     if (today.getYear() > year) {
 	return (yy + "/" + mm + "/" + dd + " " + HH + ":" + MM);
-    } else if ( (diff = today - this) < 24*60*60*1000 + 30) {
+    } else if ( (diff = today - thisdate) < 24*60*60*1000 + 30) {
 	return Math.ceil(diff / (60*60*1000)) + "ŽžŠÔˆÈ“à" ;
     } else {
 	return (mm + "/" + dd + " " + HH + ":" + MM);

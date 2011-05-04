@@ -1,5 +1,5 @@
 body {
-    width:330px;
+    width: 400px;
     height:500px;
     margin: 0px;
     padding: 0px;
@@ -20,4 +20,69 @@ body {
 }
 #selectRoom {
     font-size: 9px;
+}
+
+dl.child {
+    margin-left: 20px;
+    margin-right: 5px;
+}
+
+dt {
+    font-weight: bold;
+    color: #333333;
+    border-top: 1px #F27300 solid;
+    border-left: 1px #F27300 solid;
+    border-right: 1px #F27300 solid;
+    background: #F6A828;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+}
+
+dd {
+    border-left: 1px #F27300 solid;
+    border-right: 1px #F27300 solid;
+    border-bottom: 1px #F27300 solid;
+    background: #FFFFAA;
+    -webkit-border-bottom-left-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    margin-left: 0;
+    margin-bottom: 10px;
+    padding-top: 1px;
+}
+
+dt.depth_level1{
+    background: #F6A828;
+}
+
+dd.depth_level1{
+}
+
+dt.depth_level2{
+}
+
+dd.depth_level2{
+}
+
+dt.depth_level3{
+}
+
+dd.depth_level3{
+}
+
+dt.depth_level4{
+}
+
+dd.depth_level4{
+}
+
+dt.depth_level5{
+}
+
+dd.depth_level5{
+}
+
+dt.depth_level6{
+}
+
+dd.depth_level6{
 }
