@@ -27,7 +27,7 @@
 
         for(var i = 0; i < data.length; i ++){
           if (( date < new Date(data[i].entry.updated_at) ) && (window.webkitNotifications.checkPermission() === 0)) {
-            showNotification("icon.png", data[i].entry.participation.name + "@" + data[i].entry.participation.group.name + "(" + new Date(data[i].entry.updated_at).dateFormat() + ")", data[i].entry.content);
+            showNotification("icon.png", data[i].entry.participation.name + "@" + data[i].entry.participation.group.name + "(" + dateFormat(data[i].entry.updated_at) + ")", data[i].entry.content);
           }
         };
 
