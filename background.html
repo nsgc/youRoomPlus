@@ -15,32 +15,40 @@
 
       var callbackHomeTimeLine = function(resp, xhr) {
         var data = JSON.parse(xhr.responseText);
-        var date = new Date(localStorage["youroomLoadTime"]);
-
-        if (date == "Invalid Date" ) {
-          if (data != "undefined") {
-            date = new Date(data[0].entry.updated_at);
-          } else {
-            date = new Date();
-          }
-        }
 
         for(var i = 0; i < data.length; i ++){
-          if (( date < new Date(data[i].entry.updated_at) ) && (window.webkitNotifications.checkPermission() === 0)) {
+          if (window.webkitNotifications.checkPermission() === 0) {
             showNotification("icon.png", data[i].entry.participation.name + "@" + data[i].entry.participation.group.name + "(" + dateFormat(data[i].entry.updated_at) + ")", data[i].entry.content);
           }
         };
 
-        if ( date < new Date(data[0].entry.updated_at)) { date = new Date(data[0].entry.updated_at); }
+        console.log("localStrage");
+        console.log(parseInt(localStorage["youroomPlusUnreadNum"]));
+        console.log("data.length");
+        console.log(data.length);
+        var unreadNum = (parseInt(localStorage["youroomPlusUnreadNum"]) + data.length).toString();
 
-        localStorage["youroomLoadTime"] = date.toString();
+        if (unreadNum == "NaN" || unreadNum == "0"){
+          localStorage["youroomPlusUnreadNum"] = data.length;
+        } else {
+          chrome.browserAction.setBadgeText({text: unreadNum});
+          localStorage["youroomPlusUnreadNum"] = unreadNum;
+        }
+
         return null;
       }
 
       function loadHomeTimeLineAtInterval() {
+        var date = new Date(localStorage["youroomLoadTime"]);
+        if (date == "Invalid Date" ) {
+          date = new Date();
+        }
+
         var url = 'https://www.youroom.in/';
-        var request = { 'method': 'GET', 'parameters': {'format': 'json'} };
-          oauth.sendSignedRequest(url, callbackHomeTimeLine, request);
+        var request = { 'method': 'GET', 'parameters': {'format': 'json', 'since': date, 'flat': 'true'} };
+        oauth.sendSignedRequest(url, callbackHomeTimeLine, request);
+
+        localStorage["youroomLoadTime"] = new Date();
       }
 
       var syncYouroom = function () {
